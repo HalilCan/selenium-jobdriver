@@ -84,7 +84,7 @@ public class Jape {
         }
         
         // TODO: SourceWriter should be implemented separately.
-        sr.writeCSV("\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv", outputString);
+        sr.writeCSV("\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\output\\uni-output.csv", outputString);
         if (outputString != "") {
             return true;
         } else {
@@ -95,7 +95,7 @@ public class Jape {
     ArrayList<String> getLinksWithStrings(String filter) {
         ArrayList<String> matchList = new ArrayList<String>();
         java.util.List<WebElement> matches = _driver.findElements(
-                By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')]"));
+                By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')] | //a[contains(text(), 'Co-op')] | //a[contains(text(), 'Co-Op')] | //a[contains(text(), 'Coop')]"));
         if (matches != null) {
             try {
                 matchList.add("Domain");
@@ -118,11 +118,13 @@ public class Jape {
             if (wb.getText().contains(filter)) {
                 links.add(wb.getText());
 
+                /* Will this be necessary?
                 String fullHref = _driver.getCurrentUrl();
                 fullHref += wb.getAttribute("href");
                 links.add(fullHref);
+                */
 
-                links.add("newline");
+                links.add(wb.getAttribute("href"));
             }
         }
         return links;
