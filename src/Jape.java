@@ -8,6 +8,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.awt.List;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Jape {
     private WebDriver driver;
@@ -36,14 +38,27 @@ public class Jape {
     void closeBrowser() {
         driver.close();
     }
+    
+    void get (String address) {
+        driver.get(address);
+    }
 
-    java.util.List<WebElement> getLinkWithStrings(String[] strings) {
-        //strings: 'Intern 2019', 'Intern, 2019'
+    java.util.List<WebElement> getLinksWithStrings() {
         java.util.List<WebElement> matches = driver
-                .findElements(By.xpath("//a[contains(text(),'Intern 2019')] | //a[contains(text(), 'Intern, 2019')]"));
+                .findElements(By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')]"));
         // $x("//a[contains(text(),'2019 intern')] | //a[contains(text(), 'Intern')]")
         return matches;
         // return null;
+    }
+    
+    Map<String, String> filterElementsByString (java.util.List<WebElement> matches, String filter) {
+        Map<String, String> links = new HashMap<String, String>();
+        for (WebElement wb : matches) {
+            if (wb.getText().contains(filter)) {
+                links.put(wb.getText(), wb.getAttribute("href"));
+            }
+        }
+        return links;
     }
 
     /*
