@@ -127,7 +127,10 @@ public class Jape {
 
         for (WebElement wb : matches) {
             hasHref = (wb.getAttribute("href")) != null;
-            if (wb.getText().contains(filter)) {
+            System.out.println(wb.getText());
+            System.out.println(wb.getAttribute("href") != null);
+            
+            if (filter == "" | wb.getText().contains(filter)) {
                 if (hasHref) {
                     links.add(wb.getText());
                     links.add(wb.getAttribute("href"));
@@ -136,16 +139,23 @@ public class Jape {
                     boolean parentHasHref = false;
                     int parentCeiling = 3;
                     WebElement parentElement = wb;
-                    for (int i = 0; i < parentCeiling; i++) {
+                    for (int i = 0; i <= parentCeiling; i++) {
+                        System.out.println(parentHasHref);
                         if (!parentHasHref) {
                             parentElement = (WebElement) executor.executeScript(
                                     "return arguments[0].parentNode;", parentElement);
-                            parentHasHref = (wb.getAttribute("href") != null);
+                            System.out.println(parentElement.getText());
+                            parentHasHref = (parentElement.getAttribute("href") != null);
                         } else {
                             links.add(wb.getText());
                             links.add(parentElement.getAttribute("href"));
                             links.add("newline");
+                            System.out.println(wb.getText());
+                            System.out.print(" --- element added");
                             break;
+                        }
+                        if (i == 2) {
+                            System.out.println(" NO element added");
                         }
 
                     }
