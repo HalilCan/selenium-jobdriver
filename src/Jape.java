@@ -1,5 +1,5 @@
 import org.openqa.selenium.By;
-
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import org.openqa.selenium.WebElement;
@@ -123,16 +123,32 @@ public class Jape {
 
     ArrayList<String> filterElementsByString(java.util.List<WebElement> matches, String filter) {
         ArrayList<String> links = new ArrayList<String>();
+
+        JavascriptExecutor executor = (JavascriptExecutor) _driver;
+        boolean hasHref = false;
+
         for (WebElement wb : matches) {
+            hasHref = (wb.getAttribute("href")) != null;
             if (wb.getText().contains(filter)) {
-                links.add(wb.getText());
+                if (hasHref) {
+                    links.add(wb.getText());
+                    links.add(wb.getAttribute("href"));
+                } else {
+                    WebElement parentElement = (WebElement) executor
+                            .executeScript("return arguments[0].parentNode;", wb);
+                    boolean parentHasHref = (wb.getAttribute("href") != null);
+                    if (parentHasHref) {
+                        links.add(wb.getText());
+                        links.add(parentElement.getAttribute("href"));
+                    }
+
+                }
 
                 /*
                  * Will this be necessary? String fullHref = _driver.getCurrentUrl(); fullHref
                  * += wb.getAttribute("href"); links.add(fullHref);
                  */
 
-                links.add(wb.getAttribute("href"));
             }
         }
         return links;
