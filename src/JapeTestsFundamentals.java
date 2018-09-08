@@ -52,5 +52,17 @@ class JapeTestsFundamentals {
         //interestingly, Airbnb has an invisible header with id "smart-banner" that jape couldn't find.
         jape.closeDriver();
     }
+    
+    @Test
+    void JapeAirbnbFull() {
+        String sourcepath = "\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv";
+        Jape jape = new Jape();
+        
+        boolean result = jape.scrapeFromSource(sourcepath);
+        Assertions.assertTrue(result);
+        
+        jape.closeDriver();
+    }
+    
 
 }

@@ -53,8 +53,7 @@ public class Jape {
     }
 
     boolean scrapeFromSource(String sourcepath) {
-        SourceReader sr = new SourceReader(
-                "\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv");
+        SourceReader sr = new SourceReader(sourcepath);
         ArrayList<String> sourceList = sr.getSourceList();
 
         ArrayList<String> totalMatches = new ArrayList<String>();
