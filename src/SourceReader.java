@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class SourceReader {
     private String csvPath;
     private String splitter = ",";
+    
     @SuppressWarnings("unused")
     private String lineBreak = "";
 
