@@ -86,6 +86,11 @@ public class Jape {
         
         // TODO: SourceWriter should be implemented separately.
         sr.writeCSV("\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv", outputString);
+        if (outputString != "") {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     ArrayList<String> getLinksWithStrings(String filter) {
