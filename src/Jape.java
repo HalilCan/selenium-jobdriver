@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+//5 requests can put you on FBI Internet Crime Complaint Center?
+
 public class Jape {
     private WebDriver _driver;
     private String workingDirectory;
