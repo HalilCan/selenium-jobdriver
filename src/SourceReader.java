@@ -1,11 +1,14 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
 public class SourceReader {
     private String csvPath;
     private String splitter = ",";
-    
+
     @SuppressWarnings("unused")
     private String lineBreak = "";
 
@@ -40,5 +43,14 @@ public class SourceReader {
 
     void setLineBreak(String linebreak) {
         this.lineBreak = linebreak;
+    }
+
+    void writeCSV(String path, String output) {
+        try  (BufferedWriter bw = new BufferedWriter(new FileWriter(path))) {
+                bw.write(output);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

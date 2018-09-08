@@ -7,7 +7,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.awt.List;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,20 +41,32 @@ public class Jape {
     void closeDriver() {
         driver.close();
     }
-    
-    void get (String address) {
+
+    void get(String address) {
         driver.get(address);
     }
 
-    java.util.List<WebElement> getLinksWithStrings() {
-        java.util.List<WebElement> matches = driver
-                .findElements(By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')]"));
-        // $x("//a[contains(text(),'2019 intern')] | //a[contains(text(), 'Intern')]")
-        return matches;
-        // return null;
+    boolean parseSource(String sourcepath) {
+        SourceReader sr = new SourceReader(
+                "\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv");
+        ArrayList<String> sourceList = sr.getSourceList();
+
+        // TODO: SourceWriter should be implemented separately.
     }
-    
-    Map<String, String> filterElementsByString (java.util.List<WebElement> matches, String filter) {
+
+    Map<String, java.util.List<WebElement>> getLinksWithStrings() {
+        Map<String, java.util.List<WebElement>> matchMap = new HashMap<String, java.util.List<WebElement>>();
+        java.util.List<WebElement> matches = driver.findElements(
+                By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')]"));
+        if (matches != null) {
+            matchMap.put(getDomainName(driver.getCurrentUrl()), matches);
+            return matchMap;
+        } else {
+            return null;
+        }
+    }
+
+    Map<String, String> filterElementsByString(java.util.List<WebElement> matches, String filter) {
         Map<String, String> links = new HashMap<String, String>();
         for (WebElement wb : matches) {
             if (wb.getText().contains(filter)) {
@@ -59,6 +74,16 @@ public class Jape {
             }
         }
         return links;
+    }
+
+    String getDomainName(String url) throws URISyntaxException {
+        URI uri = new URI(url);
+        String domain = uri.getHost();
+        return domain.startsWith("www.") ? domain.substring(4) : domain;
+    }
+
+    void outputMatches(Map<String, String> links) {
+
     }
 
     /*
