@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.List;
 import java.net.URI;
@@ -15,8 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Jape {
-    private WebDriver driver;
+    private WebDriver _driver;
     private String workingDirectory;
+    private WebDriverWait _wait;
 
     public Jape() {
         // TODO: REMEMBER THE NEWS READER!
@@ -29,29 +31,41 @@ public class Jape {
         System.setProperty("webdriver.gecko.driver",
                 this.workingDirectory + "\\\\geckodriver-v0.21.0-win64\\geckodriver.exe");
 
-        this.driver = new FirefoxDriver();
-        driver.get(address);
+        this._driver = new FirefoxDriver();
+        _driver.get(address);
+
+        //_wait = new WebDriverWait(_driver, new TimeSpan(0, 1, 0));
     }
 
     boolean isElementDisplayedByID(String elementId) {
-        WebElement header = driver.findElement(By.id(elementId));
+        WebElement header = _driver.findElement(By.id(elementId));
         return header.isDisplayed();
     }
 
     void closeDriver() {
-        driver.close();
+        _driver.close();
     }
 
     void get(String address) {
-        driver.get(address);
+        _driver.get(address);
     }
 
     boolean parseSource(String sourcepath) {
         SourceReader sr = new SourceReader(
                 "\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv");
         ArrayList<String> sourceList = sr.getSourceList();
+        
+        for (int i = 1; i < sourceList.size(); i += 2) {
+            this.get(sourceList.get(i));
+            Map<String, java.util.List<WebElement>> currentMatches = new HashMap<String, java.util.List<WebElement>>();
+            if ((currentMatches = getLinksWithStrings()) != null) {
+                
+            }
+            
+        }
 
         // TODO: SourceWriter should be implemented separately.
+        
     }
 
     Map<String, java.util.List<WebElement>> getLinksWithStrings() {
@@ -59,8 +73,14 @@ public class Jape {
         java.util.List<WebElement> matches = driver.findElements(
                 By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')]"));
         if (matches != null) {
-            matchMap.put(getDomainName(driver.getCurrentUrl()), matches);
-            return matchMap;
+            try {
+                matchMap.put(getDomainName(driver.getCurrentUrl()), matches);
+                return matchMap;
+            } catch (URISyntaxException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return null;
+            }
         } else {
             return null;
         }
