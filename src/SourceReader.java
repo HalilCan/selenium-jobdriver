@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SourceReader {
-    String csvPath;
-    String splitter = ",";
-    String lineBreak = "";
+    private String csvPath;
+    private String splitter = ",";
+    private String lineBreak = "";
 
     public SourceReader(String path) {
-        this.csvPath = "args[0]";
-
+        this.csvPath = path;
     }
 
     List<String> getSourceList() {

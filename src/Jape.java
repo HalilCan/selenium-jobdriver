@@ -9,8 +9,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import java.nio.file.Paths;
 
 public class Jape {
-    WebDriver browser;
-    String workingDirectory;
+    private WebDriver browser;
+    private String workingDirectory;
 
     public Jape() {
         // TODO: REMEMBER THE NEWS READER!
