@@ -30,8 +30,8 @@ class JapeTestsFundamentals {
     
     @Test
     void JapeSiteHeaderIsOnHomePage() {
-        JobScraper jape = new JobScraper();
-        Assertions.assertTrue(jape.isElementDisplayed("site-header"));
+        Jape jape = new Jape();
+        Assertions.assertTrue(jape.isElementDisplayed("navwrapper"));
     }
 
 }
