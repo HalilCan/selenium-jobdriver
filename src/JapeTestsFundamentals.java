@@ -35,6 +35,7 @@ class JapeTestsFundamentals {
     void JapeSiteHeaderIsOnHomePage() {
         Jape jape = new Jape();
         Assertions.assertTrue(jape.isElementDisplayedByID("navwrapper"));
+        jape.closeDriver();
     }
 
     @Test
@@ -47,7 +48,9 @@ class JapeTestsFundamentals {
         Jape jape = new Jape();
         jape.get(link);
         
-        Assertions.assertTrue(jape.isElementDisplayedByID("smart-banner"));
+        Assertions.assertTrue(jape.isElementDisplayedByID("header"));
+        //interestingly, Airbnb has an invisible header with id "smart-banner" that jape couldn't find.
+        jape.closeDriver();
     }
 
 }

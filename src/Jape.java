@@ -35,7 +35,7 @@ public class Jape {
         return header.isDisplayed();
     }
 
-    void closeBrowser() {
+    void closeDriver() {
         driver.close();
     }
     
