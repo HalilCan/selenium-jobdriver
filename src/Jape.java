@@ -86,8 +86,9 @@ public class Jape {
             } else if (cur == "newline") {
                 outputString += '\n';
             } else {
+                outputString += "'";
                 outputString += cur;
-                outputString += ",";
+                outputString += "',";
             }
 
         }
@@ -95,11 +96,8 @@ public class Jape {
         // TODO: SourceWriter should be implemented separately.
         sr.writeCSV("\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\output\\uni-output.csv",
                 outputString);
-        if (outputString != "") {
-            return true;
-        } else {
-            return false;
-        }
+        
+        return(outputString != "");
     }
 
     ArrayList<String> getLinksWithStrings(String filter) {
@@ -107,7 +105,7 @@ public class Jape {
         java.util.List<WebElement> matches = _driver.findElements(By.xpath(coreXPath));
         if (matches != null) {
             try {
-                matchList.add("Domain");
+                matchList.add("Domain:");
                 matchList.add(getDomainName(_driver.getCurrentUrl()));
                 matchList.addAll(filterElementsByString(matches, filter));
                 return matchList;
@@ -133,15 +131,24 @@ public class Jape {
                 if (hasHref) {
                     links.add(wb.getText());
                     links.add(wb.getAttribute("href"));
+                    links.add("newline");
                 } else {
-                    WebElement parentElement = (WebElement) executor
-                            .executeScript("return arguments[0].parentNode;", wb);
-                    boolean parentHasHref = (wb.getAttribute("href") != null);
-                    if (parentHasHref) {
-                        links.add(wb.getText());
-                        links.add(parentElement.getAttribute("href"));
-                    }
+                    boolean parentHasHref = false;
+                    int parentCeiling = 3;
+                    WebElement parentElement = wb;
+                    for (int i = 0; i < parentCeiling; i++) {
+                        if (!parentHasHref) {
+                            parentElement = (WebElement) executor.executeScript(
+                                    "return arguments[0].parentNode;", parentElement);
+                            parentHasHref = (wb.getAttribute("href") != null);
+                        } else {
+                            links.add(wb.getText());
+                            links.add(parentElement.getAttribute("href"));
+                            links.add("newline");
+                            break;
+                        }
 
+                    }
                 }
 
                 /*

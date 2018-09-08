@@ -17,7 +17,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 class JapeTestsFundamentals {
 
-    @Test
+    //@Test
     void siteHeaderIsOnHomePage() {
         WebDriver driver;
         // Firefox's geckodriver requires this:
@@ -31,14 +31,14 @@ class JapeTestsFundamentals {
         driver.close();
     }
 
-    @Test
+    //@Test
     void JapeSiteHeaderIsOnHomePage() {
         Jape jape = new Jape();
         Assertions.assertTrue(jape.isElementDisplayedByID("navwrapper"));
         jape.closeDriver();
     }
 
-    @Test
+    //@Test
     void JapeAirbnbBase() {
         SourceReader sr = new SourceReader(
                 "\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv");
