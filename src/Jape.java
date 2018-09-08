@@ -21,6 +21,7 @@ public class Jape {
     private WebDriver _driver;
     private String workingDirectory;
     private WebDriverWait _wait;
+    private String coreXPath;
 
     public Jape() {
         // TODO: REMEMBER THE NEWS READER!
@@ -35,6 +36,14 @@ public class Jape {
 
         this._driver = new FirefoxDriver();
         _driver.get(address);
+
+        coreXPath = "//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')] | "
+                + "//a[contains(text(), 'Co-op')] | //a[contains(text(), 'Co-Op')] | "
+                + "//div[contains(text(), 'Co-op')]"
+                + "//div[contains(text(), 'Co-Op')] | //div[contains(text(), 'Intern')]"
+                + "| //div[contains(text(), 'Internship')]"
+                + "//span[contains(text(), 'Intern')] | //span[contains(text(), 'Internship')]"
+                + "//span[contains(text(), 'Co-op')] | //span[contains(text(), 'Co-Op')]";
 
         // _wait = new WebDriverWait(_driver, new TimeSpan(0, 1, 0));
     }
@@ -73,7 +82,7 @@ public class Jape {
             String cur = totalMatches.get(j);
             System.out.println(cur);
             if (cur == "Domain:") {
-                outputString += "\n Domain: ";
+                outputString += '\n';
             } else if (cur == "newline") {
                 outputString += '\n';
             } else {
@@ -82,9 +91,10 @@ public class Jape {
             }
 
         }
-        
+
         // TODO: SourceWriter should be implemented separately.
-        sr.writeCSV("\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\output\\uni-output.csv", outputString);
+        sr.writeCSV("\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\output\\uni-output.csv",
+                outputString);
         if (outputString != "") {
             return true;
         } else {
@@ -94,8 +104,7 @@ public class Jape {
 
     ArrayList<String> getLinksWithStrings(String filter) {
         ArrayList<String> matchList = new ArrayList<String>();
-        java.util.List<WebElement> matches = _driver.findElements(
-                By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')] | //a[contains(text(), 'Co-op')] | //a[contains(text(), 'Co-Op')] | //a[contains(text(), 'Coop')]"));
+        java.util.List<WebElement> matches = _driver.findElements(By.xpath(coreXPath));
         if (matches != null) {
             try {
                 matchList.add("Domain");
@@ -118,11 +127,10 @@ public class Jape {
             if (wb.getText().contains(filter)) {
                 links.add(wb.getText());
 
-                /* Will this be necessary?
-                String fullHref = _driver.getCurrentUrl();
-                fullHref += wb.getAttribute("href");
-                links.add(fullHref);
-                */
+                /*
+                 * Will this be necessary? String fullHref = _driver.getCurrentUrl(); fullHref
+                 * += wb.getAttribute("href"); links.add(fullHref);
+                 */
 
                 links.add(wb.getAttribute("href"));
             }
