@@ -13,10 +13,10 @@ import org.openqa.selenium.WebElement;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-class CheckSauceLabsHomePage {
+class JapeTestsFundamentals {
 
     @Test
-    void site_header_is_on_home_page() {
+    void siteHeaderIsOnHomePage() {
         WebDriver browser;
         //Firefox's geckodriver requires this:
         System.setProperty("webdriver.gecko.driver","\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\geckodriver-v0.21.0-win64\\geckodriver.exe");
@@ -26,6 +26,12 @@ class CheckSauceLabsHomePage {
         WebElement header = browser.findElement(By.id("site-header"));
         Assertions.assertTrue(header.isDisplayed());
         browser.close();
+    }
+    
+    @Test
+    void JapeSiteHeaderIsOnHomePage() {
+        JobScraper jape = new JobScraper();
+        Assertions.assertTrue(jape.isElementDisplayed("site-header"));
     }
 
 }
