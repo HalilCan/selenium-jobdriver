@@ -6,10 +6,11 @@ import org.openqa.selenium.WebElement;
 
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.awt.List;
 import java.nio.file.Paths;
 
 public class Jape {
-    private WebDriver browser;
+    private WebDriver driver;
     private String workingDirectory;
 
     public Jape() {
@@ -20,34 +21,98 @@ public class Jape {
     public Jape(String address) {
         this.workingDirectory = Paths.get(".").toAbsolutePath().normalize().toString();
         // Firefox's geckodriver requires this:
-        System.setProperty("webdriver.gecko.driver", this.workingDirectory + "\\\\geckodriver-v0.21.0-win64\\geckodriver.exe");
-        
-        this.browser = new FirefoxDriver();
-        browser.get(address);
+        System.setProperty("webdriver.gecko.driver",
+                this.workingDirectory + "\\\\geckodriver-v0.21.0-win64\\geckodriver.exe");
+
+        this.driver = new FirefoxDriver();
+        driver.get(address);
     }
-    
-    boolean isElementDisplayed(String elementId) {
-        WebElement header = browser.findElement(By.id(elementId));
+
+    boolean isElementDisplayedByID(String elementId) {
+        WebElement header = driver.findElement(By.id(elementId));
         return header.isDisplayed();
     }
-    
+
     void closeBrowser() {
-        browser.close();        
+        driver.close();
     }
-    
+
+    java.util.List<WebElement> getLinkWithStrings(String[] strings) {
+        //strings: 'Intern 2019', 'Intern, 2019'
+        java.util.List<WebElement> matches = driver
+                .findElements(By.xpath("//a[contains(text(),'Intern 2019')] | //a[contains(text(), 'Intern, 2019')]"));
+        // $x("//a[contains(text(),'2019 intern')] | //a[contains(text(), 'Intern')]")
+        return matches;
+        // return null;
+    }
+
     /*
-     *  WebElement Email = driver.findElement(By.cssSelector("input[id=email]"));
-     *  Email.SendKeys("hello@sampleemail.com");
-     *  WebElement ele3 = driver.findElement(By.cssSelector(".submit.primary-btn"));
-     *  
-     *  It will find input tag which contains 'id' attribute containing 'mai' text. Email contains 'mai'
-     *  css=input[id*='mai']
-     *  
-     *  First it will find Form tag following remaining path to locate child node.
-     *  css=form>label>input[id=PersistentCookie] 
-     *  
-     *  It will try to locate "input" tag where another "input" tag is present on page. the below example will select third input adjacent tag.
-     *  css=input + input + input
+     * WebElement Email = driver.findElement(By.cssSelector("input[id=email]"));
+     * Email.SendKeys("hello@sampleemail.com"); WebElement ele3 =
+     * driver.findElement(By.cssSelector(".submit.primary-btn"));
+     * 
+     * It will find input tag which contains 'id' attribute containing 'mai' text.
+     * Email contains 'mai' css=input[id*='mai']
+     * 
+     * XPath contains xpath=//a[contains(text(),'Software Engineer, Intern 2019')]
+     * 
+     * First it will find Form tag following remaining path to locate child node.
+     * css=form>label>input[id=PersistentCookie]
+     * 
+     * It will try to locate "input" tag where another "input" tag is present on
+     * page. the below example will select third input adjacent tag. css=input +
+     * input + input
+     * 
+     * I often use "contains", but there are more. Here are some examples:
+     * 
+     * multiple condition: //div[@class='bubble-title' and contains(text(),
+     * 'Cover')]
+     * 
+     * partial match: //span[contains(text(), 'Assign Rate')]
+     * 
+     * starts-with: //input[starts-with(@id,'reportcombo')
+     * 
+     * value has spaces: //div[./div/div[normalize-space(.)='More Actions...']]
+     * 
+     * sibling: //td[.='LoadType']/following-sibling::td[1]/select"
+     * 
+     * more complex://td[contains(normalize-space(@class), 'actualcell
+     * sajcell-row-lines saj-special x-grid-row-collapsed')]
+     * 
+     * 
+     * The commands
+     * 
+     * The JavaScript command line provided by the Web Console offers a few built-in
+     * helper functions that make certain tasks easier.
+     * 
+     * $() Looks up a CSS selector string, returning the first element that matches.
+     * Equivalent to document.querySelector() or calls the $ function in the page,
+     * if it exists.
+     * 
+     * $$() Looks up a CSS selector string, returning an array of DOM nodes that
+     * match. This is like for document.querySelectorAll(), but returns an array
+     * instead of a NodeList.
+     * 
+     * $0 The currently-inspected element in the page.
+     * 
+     * $_ Stores the result of the last expression executed in the console's command
+     * line. For example, if you type "2+2 <enter>", then "$_ <enter>", the console
+     * will print 4.
+     * 
+     * $x() Evaluates an XPath expression and returns an array of matching nodes.
+     * 
+     * keys() Given an object, returns a list of the keys (or property names) on
+     * that object. This is a shortcut for Object.keys.
+     * 
+     * values() Given an object, returns a list of the values on that object; serves
+     * as a companion to keys().
+     * 
+     * clear() Clears the console output area.
+     * 
+     * inspect() Given an object, opens the object inspector for that object.
+     * 
+     * pprint() Formats the specified value in a readable way; this is useful for
+     * dumping the contents of objects and arrays.
      */
 
 }
