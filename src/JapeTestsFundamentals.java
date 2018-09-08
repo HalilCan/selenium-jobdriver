@@ -45,11 +45,9 @@ class JapeTestsFundamentals {
         String link = sourceList.get(1);
 
         Jape jape = new Jape();
-        jape.get("https://www.airbnb.com/careers/university");
-
+        jape.get(link);
         
-        
-        Assertions.assertTrue(jape.isElementDisplayedByID("navwrapper"));
+        Assertions.assertTrue(jape.isElementDisplayedByID("smart-banner"));
     }
 
 }
