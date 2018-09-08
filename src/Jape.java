@@ -75,15 +75,17 @@ public class Jape {
             System.out.println(cur);
             if (cur == "Domain:") {
                 outputString += "\n Domain: ";
+            } else if (cur == "newline") {
+                outputString += '\n';
             } else {
-                outPutString += cur;
-                outPutString += ",";
+                outputString += cur;
+                outputString += ",";
             }
 
         }
-
+        
         // TODO: SourceWriter should be implemented separately.
-
+        sr.writeCSV("\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv", outputString);
     }
 
     ArrayList<String> getLinksWithStrings(String filter) {
@@ -115,6 +117,8 @@ public class Jape {
                 String fullHref = _driver.getCurrentUrl();
                 fullHref += wb.getAttribute("href");
                 links.add(fullHref);
+
+                links.add("newline");
             }
         }
         return links;
