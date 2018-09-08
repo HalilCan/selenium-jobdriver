@@ -50,7 +50,7 @@ public class Jape {
         _driver.get(address);
     }
 
-    boolean parseSource(String sourcepath) {
+    boolean scrapeFromSource(String sourcepath) {
         SourceReader sr = new SourceReader(
                 "\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv");
         ArrayList<String> sourceList = sr.getSourceList();
