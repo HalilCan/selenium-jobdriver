@@ -34,5 +34,20 @@ public class Jape {
     void closeBrowser() {
         browser.close();        
     }
+    
+    /*
+     *  WebElement Email = driver.findElement(By.cssSelector("input[id=email]"));
+     *  Email.SendKeys("hello@sampleemail.com");
+     *  WebElement ele3 = driver.findElement(By.cssSelector(".submit.primary-btn"));
+     *  
+     *  It will find input tag which contains 'id' attribute containing 'mai' text. Email contains 'mai'
+     *  css=input[id*='mai']
+     *  
+     *  First it will find Form tag following remaining path to locate child node.
+     *  css=form>label>input[id=PersistentCookie] 
+     *  
+     *  It will try to locate "input" tag where another "input" tag is present on page. the below example will select third input adjacent tag.
+     *  css=input + input + input
+     */
 
 }
