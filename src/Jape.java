@@ -7,6 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.gargoylesoftware.htmlunit.javascript.host.Console;
+
 import java.awt.List;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,7 +36,7 @@ public class Jape {
         this._driver = new FirefoxDriver();
         _driver.get(address);
 
-        //_wait = new WebDriverWait(_driver, new TimeSpan(0, 1, 0));
+        // _wait = new WebDriverWait(_driver, new TimeSpan(0, 1, 0));
     }
 
     boolean isElementDisplayedByID(String elementId) {
@@ -54,28 +56,46 @@ public class Jape {
         SourceReader sr = new SourceReader(
                 "\\Users\\HCM\\eclipse-workspace\\selenium-jobscraper\\sources\\uni-sources.csv");
         ArrayList<String> sourceList = sr.getSourceList();
-        
+
+        ArrayList<String> totalMatches = new ArrayList<String>();
+        ArrayList<String> currentMatches = new ArrayList<String>();
+        String outputString = "";
+
         for (int i = 1; i < sourceList.size(); i += 2) {
             this.get(sourceList.get(i));
-            Map<String, java.util.List<WebElement>> currentMatches = new HashMap<String, java.util.List<WebElement>>();
-            if ((currentMatches = getLinksWithStrings()) != null) {
-                
+            ;
+            if ((currentMatches = getLinksWithStrings("2019")).size() > 0) {
+                totalMatches.addAll(currentMatches);
+                currentMatches.clear();
             }
-            
+        }
+
+        for (int j = 0; j < totalMatches.size(); j++) {
+            String cur = totalMatches.get(j);
+            System.out.println(cur);
+            if (cur == "Domain:") {
+                outputString += "\n Domain: ";
+            } else {
+                outPutString += cur;
+                outPutString += ",";
+            }
+
         }
 
         // TODO: SourceWriter should be implemented separately.
-        
+
     }
 
-    Map<String, java.util.List<WebElement>> getLinksWithStrings() {
-        Map<String, java.util.List<WebElement>> matchMap = new HashMap<String, java.util.List<WebElement>>();
-        java.util.List<WebElement> matches = driver.findElements(
+    ArrayList<String> getLinksWithStrings(String filter) {
+        ArrayList<String> matchList = new ArrayList<String>();
+        java.util.List<WebElement> matches = _driver.findElements(
                 By.xpath("//a[contains(text(),'Intern')] | //a[contains(text(), 'Internship')]"));
         if (matches != null) {
             try {
-                matchMap.put(getDomainName(driver.getCurrentUrl()), matches);
-                return matchMap;
+                matchList.add("Domain");
+                matchList.add(getDomainName(_driver.getCurrentUrl()));
+                matchList.addAll(filterElementsByString(matches, filter));
+                return matchList;
             } catch (URISyntaxException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -86,11 +106,15 @@ public class Jape {
         }
     }
 
-    Map<String, String> filterElementsByString(java.util.List<WebElement> matches, String filter) {
-        Map<String, String> links = new HashMap<String, String>();
+    ArrayList<String> filterElementsByString(java.util.List<WebElement> matches, String filter) {
+        ArrayList<String> links = new ArrayList<String>();
         for (WebElement wb : matches) {
             if (wb.getText().contains(filter)) {
-                links.put(wb.getText(), wb.getAttribute("href"));
+                links.add(wb.getText());
+
+                String fullHref = _driver.getCurrentUrl();
+                fullHref += wb.getAttribute("href");
+                links.add(fullHref);
             }
         }
         return links;
