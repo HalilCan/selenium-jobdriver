@@ -2,19 +2,18 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
 public class SourceReader {
     private String csvPath;
     private String splitter = ",";
+    @SuppressWarnings("unused")
     private String lineBreak = "";
 
     public SourceReader(String path) {
         this.csvPath = path;
     }
 
-    List<String> getSourceList() {
-        List<String> sourceList = new ArrayList<String>();
+    ArrayList<String> getSourceList() {
+        ArrayList<String> sourceList = new ArrayList<String>();
         String line = "";
 
         try (BufferedReader br = new BufferedReader(new FileReader(csvPath))) {
